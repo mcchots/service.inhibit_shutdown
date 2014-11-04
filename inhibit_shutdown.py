@@ -60,15 +60,15 @@ def check_processes():
 
     processes = subprocess.check_output(['/bin/ps', '-d'], universal_newlines=True)
 
-	for line in processes.split('\n')[2:]:
-    items = line.split()
-    if len(items) < 4:
-        continue
-	
-	process = items[3]
+    for line in processes.split('\n')[2:]:
+        items = line.split()
+        if len(items) < 4:
+            continue
+		
+        process = items[3]
 
-    if (process in watched_processes):
-        log("Found process: {}".format(process))
+        if (process in watched_processes):
+            log("Found process: {}".format(process))
 
 def load_settings():
     global watched_local,watched_remote,sleep_time,watched_processes
