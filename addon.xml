@@ -3,7 +3,7 @@
     <requires>
         <import addon="xbmc.python" version="2.0"/>
     </requires>
-    <extension point="xbmc.service" library="inhibit_shutdown.py" start="[login|startup]" />
+    <extension point="xbmc.service" library="inhibit_shutdown.py" start="startup" />
     <extension point="xbmc.addon.metadata">
         <platform>linux</platform>
         <summary lang="en">Inhibit idle shutdown when TCP conections are open or certain programs are running.</summary>
