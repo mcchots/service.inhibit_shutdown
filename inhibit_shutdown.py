@@ -62,13 +62,18 @@ def check_processes():
 
     for line in processes.split('\n')[2:]:
         items = line.split()
+        #log("line: {}".format(line))
         if len(items) < 4:
             continue
-		
+        #log(watched_processes)
+        #log(type(watched_processes))
         process = items[3]
-
+        #log(process)
         if (process in watched_processes):
             log("Found process: {}".format(process))
+            return True
+    log("No running processes found.")
+    return False
 
 def load_settings():
     global watched_local,watched_remote,sleep_time,watched_processes
@@ -84,7 +89,7 @@ def load_settings():
         ', '.join(str(x) for x in watched_remote),
         ', '.join(str(x) for x in watched_local),
         sleep_time / 1000.0))
-    log("Watching for the following processes: {}", .format(', '.join(str(x) for x in watched_processes))
+    log("Watching for the following processes: {}".format(watched_processes))
 
 addon = xbmcaddon.Addon()
 monitor = MyMonitor()
@@ -92,7 +97,21 @@ load_settings()
 
 while not xbmc.abortRequested:
     if check_services():
+        log("Inhibiting shutdown due to active connections")
         xbmc.executebuiltin('InhibitIdleShutdown(true)')
     else:
         xbmc.executebuiltin('InhibitIdleShutdown(false)')
+
+    if check_processes():
+        log("Inhibiting shutdown due to running processes")
+        xbmc.executebuiltin('InhibitIdleShutdown(true)')
+    else:
+        xbmc.executebuiltin('InhibitIdleShutdown(false)')
+#    if xbmc.waitForAbort(10):
+#        # Abort was requested while waiting. We should exit
+#        break
     xbmc.sleep(sleep_time)
+
+#delete monitor to free up memory
+del self.monitor
+
